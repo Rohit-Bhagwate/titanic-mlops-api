@@ -1,0 +1,23 @@
+from fastapi import FastAPI
+import joblib
+import numpy as np
+
+app = FastAPI()
+
+# Load model & scaler
+model = joblib.load("model.pkl")
+scaler = joblib.load("scaler.pkl")
+
+@app.get("/get")
+def home():
+    return {"message": "Titanic Survival Prediction API"}
+
+@app.get("/predict")
+def predict():
+    # Example input
+    sample = [[3, 0, 25, 1, 0, 7.25, 0, 1]]
+
+    sample_scaled = scaler.transform(sample)
+    prediction = model.predict(sample_scaled)
+
+    return {"prediction": int(prediction[0])}

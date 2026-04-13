@@ -2,8 +2,11 @@ from fastapi import FastAPI
 import numpy as np
 import mlflow.pyfunc
 from pydantic import BaseModel
+import mlflow
 
 app = FastAPI()
+
+mlflow.set_tracking_uri("http://host.docker.internal:5001")
 
 # Load model
 model = mlflow.pyfunc.load_model("models:/titanic-model/Production")

@@ -1,13 +1,12 @@
 from fastapi import FastAPI
-import joblib
 import numpy as np
+import mlflow.pyfunc
 from pydantic import BaseModel
 
 app = FastAPI()
 
-# Load model & scaler
-model = joblib.load("model.pkl")
-scaler = joblib.load("scaler.pkl")
+# Load model
+model = mlflow.pyfunc.load_model("models:/titanic-model/Production")
 
 class Passenger(BaseModel):
     Pclass: int
@@ -37,7 +36,7 @@ def predict(data: Passenger):
         data.Embarked_S
     ]]
 
-    sample_scaled = scaler.transform(sample)
-    prediction = model.predict(sample_scaled)
+    
+    prediction = model.predict(sample)
 
     return {"prediction": int(prediction[0])}

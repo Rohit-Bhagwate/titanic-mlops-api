@@ -7,6 +7,7 @@ import mlflow
 app = FastAPI()
 
 mlflow.set_tracking_uri("http://host.docker.internal:5001")
+mlflow.set_registry_uri("http://host.docker.internal:5001")
 
 # Load model
 model = mlflow.pyfunc.load_model("models:/titanic-model/Production")
